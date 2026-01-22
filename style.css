@@ -17,6 +17,12 @@
   background-attachment: fixed;
 }
 
+/* Card readability on background */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+}
+
 body {
   font-family: Arial;
   background: #f4f4f4;
