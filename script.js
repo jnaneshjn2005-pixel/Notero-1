@@ -28,19 +28,24 @@ let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
 // 4️⃣ USER: ADD NOTE (PENDING)
 function addNote() {
+  let currentUser = localStorage.getItem("currentUser");
+
   let note = {
     title: title.value,
     subject: subject.value,
     content: content.value,
-    status: "pending"
+    status: "pending",
+    uploadedBy: currentUser
   };
 
   notes.push(note);
   localStorage.setItem("notes", JSON.stringify(notes));
+
   alert("Note sent for admin approval");
 
   title.value = subject.value = content.value = "";
 }
+
 
 // ===============================
 // 👉 ADD YOUR CODE **HERE**
