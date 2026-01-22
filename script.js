@@ -101,7 +101,7 @@ function loadPending() {
           <h4>${note.title}</h4>
           <p><b>Subject:</b> ${note.subject}</p>
           <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
-          <p><b>File:</b> ${note.fileName}</p>
+          <p><b>File:</b> ${getFileIcon(note.fileType)} ${note.fileName}</p>
 
           <a href="${note.fileData}" target="_blank">View File</a><br><br>
 
@@ -157,7 +157,7 @@ function displayNotes() {
           <h3>${note.title}</h3>
           <p><b>Subject:</b> ${note.subject}</p>
           <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
-          <p><b>File:</b> ${note.fileName}</p>
+           <p><b>File:</b> ${getFileIcon(note.fileType)} ${note.fileName}</p>
 
           <a href="${note.fileData}" download="${note.fileName}">
             Download / View
@@ -177,4 +177,12 @@ function toggleDark() {
 }
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
+}
+
+function getFileIcon(type) {
+  if (type.includes("pdf")) return "📄";
+  if (type.includes("image")) return "🖼️";
+  if (type.includes("video")) return "🎬";
+  if (type.includes("word")) return "📝";
+  return "📁";
 }
