@@ -26,6 +26,9 @@
 body {
   font-family: Arial;
   background: #f4f4f4;
+  body {
+  transition: background 0.4s ease, color 0.4s ease;
+}
 }
 
 .login-box, .upload-box {
@@ -85,5 +88,14 @@ header {
 
 .dark .btn-danger {
   background-color: #dc3545;
+}
+/* DARK MODE BACKGROUND OVERRIDE */
+.dark.bg-notes {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.85)
+    ),
+    url("https://images.unsplash.com/photo-1517842645767-c639042777db");
 }
 
