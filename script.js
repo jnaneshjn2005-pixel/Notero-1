@@ -63,8 +63,11 @@ function loadPending() {
       pendingDiv.innerHTML += `
         <div class="note">
           <h4>${note.title}</h4>
+          <p><b>Subject:</b> ${note.subject}</p>
           <p>${note.content}</p>
+          <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
           <button onclick="approve(${i})">Approve</button>
+          <button onclick="deleteNote(${i})">Delete</button>
         </div>
       `;
     }
