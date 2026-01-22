@@ -138,31 +138,27 @@ loadPending();
 // ===============================
 function displayNotes() {
 
-  // 🔥 ALWAYS RELOAD LATEST NOTES
+  // Always load latest data
   notes = JSON.parse(localStorage.getItem("notes")) || [];
 
   let notesDiv = document.getElementById("notes");
   if (!notesDiv) return;
 
   let searchInput = document.getElementById("search");
-  let filterInput = document.getElementById("filter");
-
   let searchText = searchInput ? searchInput.value.toLowerCase() : "";
-  let filter = filterInput ? filterInput.value : "all";
 
   notesDiv.innerHTML = "";
 
   notes.forEach(note => {
     let matchesSearch = note.title.toLowerCase().includes(searchText);
-    let matchesFilter = filter === "all" || note.subject === filter;
 
-    if (note.status === "approved" && matchesSearch && matchesFilter) {
+    if (note.status === "approved" && matchesSearch) {
       notesDiv.innerHTML += `
         <div class="note">
           <h3>${note.title}</h3>
           <p><b>Subject:</b> ${note.subject}</p>
           <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
-           <p><b>File:</b> ${getFileIcon(note.fileType)} ${note.fileName}</p>
+          <p><b>File:</b> ${getFileIcon(note.fileType)} ${note.fileName}</p>
 
           <a href="${note.fileData}" download="${note.fileName}">
             Download / View
