@@ -136,6 +136,10 @@ loadPending();
 // USER: DISPLAY APPROVED NOTES
 // ===============================
 function displayNotes() {
+
+  // 🔥 ALWAYS RELOAD LATEST NOTES
+  notes = JSON.parse(localStorage.getItem("notes")) || [];
+
   let notesDiv = document.getElementById("notes");
   if (!notesDiv) return;
 
