@@ -186,3 +186,4 @@ function getFileIcon(type) {
   if (type.includes("word")) return "📝";
   return "📁";
 }
+displayNotes();
