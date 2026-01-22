@@ -110,3 +110,40 @@ function deleteNote(index) {
 
 // 7️⃣ AUTO-RUN WHEN admin.html OPENS
 loadPending();
+
+// ===============================
+// USER: DISPLAY APPROVED NOTES
+// ===============================
+function displayNotes() {
+  let notesDiv = document.getElementById("notes");
+  if (!notesDiv) return;
+
+  let searchInput = document.getElementById("search");
+  let filterInput = document.getElementById("filter");
+
+  let searchText = searchInput ? searchInput.value.toLowerCase() : "";
+  let filter = filterInput ? filterInput.value : "all";
+
+  notesDiv.innerHTML = "";
+
+  notes.forEach(note => {
+    let matchesSearch = note.title.toLowerCase().includes(searchText);
+    let matchesFilter = filter === "all" || note.subject === filter;
+
+    if (note.status === "approved" && matchesSearch && matchesFilter) {
+      notesDiv.innerHTML += `
+        <div class="note">
+          <h3>${note.title}</h3>
+          <p><b>Subject:</b> ${note.subject}</p>
+          <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
+          <p><b>File:</b> ${note.fileName}</p>
+
+          <a href="${note.fileData}" download="${note.fileName}">
+            Download / View
+          </a>
+        </div>
+      `;
+    }
+  });
+}
+displayNotes();
