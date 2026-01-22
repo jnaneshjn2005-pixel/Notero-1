@@ -17,9 +17,20 @@
 <button onclick="addNote()">Submit for Approval</button>
 
 <h3>📂 Approved Notes</h3>
+
 <input id="search" placeholder="Search..." onkeyup="displayNotes()">
 
+<!-- 🔽 SUBJECT FILTER (ADD HERE) -->
+<select id="filter" onchange="displayNotes()">
+  <option value="all">All Subjects</option>
+  <option value="Maths">Maths</option>
+  <option value="Physics">Physics</option>
+  <option value="Computer">Computer</option>
+</select>
+
+<!-- 📄 NOTES WILL APPEAR HERE -->
 <div id="notes"></div>
+
 
 <script src="script.js"></script>
 </body>
