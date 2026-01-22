@@ -1,3 +1,4 @@
+// 1️⃣ LOGIN FUNCTION (already added)
 function login() {
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
@@ -15,8 +16,17 @@ function login() {
     window.location.href = "dashboard.html";
   }
 }
+
+// 2️⃣ LOGOUT FUNCTION
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
+
+// 3️⃣ LOAD NOTES FROM LOCALSTORAGE (VERY IMPORTANT)
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
+// 4️⃣ USER: ADD NOTE (PENDING)
 function addNote() {
   let note = {
     title: title.value,
@@ -32,7 +42,36 @@ function addNote() {
   title.value = subject.value = content.value = "";
 }
 
-function logout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "index.html";
+// ===============================
+// 👉 ADD YOUR CODE **HERE**
+// ===============================
+
+// 5️⃣ ADMIN: LOAD PENDING NOTES
+function loadPending() {
+  let pendingDiv = document.getElementById("pending");
+  if (!pendingDiv) return;
+
+  pendingDiv.innerHTML = "";
+
+  notes.forEach((note, i) => {
+    if (note.status === "pending") {
+      pendingDiv.innerHTML += `
+        <div class="note">
+          <h4>${note.title}</h4>
+          <p>${note.content}</p>
+          <button onclick="approve(${i})">Approve</button>
+        </div>
+      `;
+    }
+  });
 }
+
+// 6️⃣ ADMIN: APPROVE NOTE
+function approve(index) {
+  notes[index].status = "approved";
+  localStorage.setItem("notes", JSON.stringify(notes));
+  loadPending();
+}
+
+// 7️⃣ AUTO-RUN WHEN admin.html OPENS
+loadPending();
