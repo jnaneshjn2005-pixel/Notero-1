@@ -29,21 +29,36 @@ let notes = JSON.parse(localStorage.getItem("notes")) || [];
 // 4️⃣ USER: ADD NOTE (PENDING)
 function addNote() {
   let currentUser = localStorage.getItem("currentUser");
+  let fileInput = document.getElementById("file");
 
-  let note = {
-    title: title.value,
-    subject: subject.value,
-    content: content.value,
-    status: "pending",
-    uploadedBy: currentUser
+  if (!fileInput.files.length) {
+    alert("Please select a file");
+    return;
+  }
+
+  let file = fileInput.files[0];
+  let reader = new FileReader();
+
+  reader.onload = function () {
+    let note = {
+      title: title.value,
+      subject: subject.value,
+      fileName: file.name,
+      fileType: file.type,
+      fileData: reader.result, // BASE64
+      status: "pending",
+      uploadedBy: currentUser
+    };
+
+    notes.push(note);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    alert("File sent for admin approval");
+
+    title.value = subject.value = "";
+    fileInput.value = "";
   };
 
-  notes.push(note);
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  alert("Note sent for admin approval");
-
-  title.value = subject.value = content.value = "";
+  reader.readAsDataURL(file);
 }
 
 
@@ -64,8 +79,11 @@ function loadPending() {
         <div class="note">
           <h4>${note.title}</h4>
           <p><b>Subject:</b> ${note.subject}</p>
-          <p>${note.content}</p>
           <p><b>Uploaded by:</b> ${note.uploadedBy}</p>
+          <p><b>File:</b> ${note.fileName}</p>
+
+          <a href="${note.fileData}" target="_blank">View File</a><br><br>
+
           <button onclick="approve(${i})">Approve</button>
           <button onclick="deleteNote(${i})">Delete</button>
         </div>
@@ -73,6 +91,7 @@ function loadPending() {
     }
   });
 }
+
 
 // 6️⃣ ADMIN: APPROVE NOTE
 function approve(index) {
