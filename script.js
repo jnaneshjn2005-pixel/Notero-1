@@ -41,21 +41,24 @@ function addNote() {
 
   let file = fileInput.files[0];
 
-  // File size limit (5MB)
-  let maxSize = 5 * 1024 * 1024;
-  if (file.size > maxSize) {
-    alert("File too large! Max 5MB allowed.");
-    return;
-  }
-
-  // Allowed file types
+  // Allowed file types (PDF, Word, PPT, Image, Video)
   let allowedTypes = [
     "application/pdf",
+
+    // Images
     "image/jpeg",
     "image/png",
+
+    // Video
     "video/mp4",
+
+    // Word
     "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+    // PowerPoint
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation"
   ];
 
   if (!allowedTypes.includes(file.type)) {
@@ -196,6 +199,7 @@ function getFileIcon(type) {
   if (type.includes("pdf")) return "📄";
   if (type.includes("image")) return "🖼️";
   if (type.includes("video")) return "🎬";
+  if (type.includes("presentation")) return "📊";
   if (type.includes("word")) return "📝";
   return "📁";
 }
@@ -206,4 +210,5 @@ function getFileIcon(type) {
 loadPending();
 displayNotes();
 
+  
 
