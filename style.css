@@ -26,9 +26,7 @@
 body {
   font-family: Arial;
   background: #f4f4f4;
-  body {
-  transition: background 0.4s ease, color 0.4s ease;
-}
+  
 }
 
 .login-box, .upload-box {
