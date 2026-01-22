@@ -4,31 +4,46 @@
   <title>User Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-notes">
 
-<h2>📘 User Dashboard</h2>
-<button onclick="logout()">Logout</button>
+<div class="container">
 
-<h3>Upload Note</h3>
+  <div class="d-flex justify-content-between align-items-center my-3">
+    <h3>📘 User Dashboard</h3>
+    <div>
+      <button class="btn btn-secondary me-2" onclick="toggleDark()">🌙</button>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-<input id="title" placeholder="Title">
-<input id="subject" placeholder="Subject">
-<input type="file" id="file" 
-       accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png,.mp4,.webm">
-<button onclick="addNote()">Submit for Approval</button>
+  <!-- Upload Card -->
+  <div class="card p-3 mb-4">
+    <h5>Upload Note</h5>
 
-<h3>📂 Approved Notes</h3>
+    <input id="title" class="form-control mb-2" placeholder="Title">
+    <input id="subject" class="form-control mb-2" placeholder="Subject">
+    <input type="file" id="file" class="form-control mb-3">
 
-<input id="search" placeholder="Search..." onkeyup="displayNotes()">
+    <button class="btn btn-primary" onclick="addNote()">Submit for Approval</button>
+  </div>
 
-<!-- 🔽 SUBJECT FILTER (ADD HERE) -->
-<select id="filter" onchange="displayNotes()">
-  <option value="all">All Subjects</option>
-</select>
+  <!-- Notes Section -->
+  <div class="card p-3">
+    <h5>📂 Approved Notes</h5>
 
-<!-- 📄 NOTES WILL APPEAR HERE -->
-<div id="notes"></div>
+    <input id="search" class="form-control mb-2" placeholder="Search..." onkeyup="displayNotes()">
 
+    <select id="filter" class="form-select mb-3" onchange="displayNotes()">
+      <option value="all">All Subjects</option>
+      <option value="Maths">Maths</option>
+      <option value="Physics">Physics</option>
+      <option value="Computer">Computer</option>
+    </select>
+
+    <div id="notes"></div>
+  </div>
+
+</div>
 
 <script src="script.js"></script>
 </body>
