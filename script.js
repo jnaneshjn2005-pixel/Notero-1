@@ -81,5 +81,13 @@ function approve(index) {
   loadPending();
 }
 
+function deleteNote(index) {
+  if (confirm("Are you sure you want to delete this note?")) {
+    notes.splice(index, 1);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    loadPending();
+  }
+}
+
 // 7️⃣ AUTO-RUN WHEN admin.html OPENS
 loadPending();
