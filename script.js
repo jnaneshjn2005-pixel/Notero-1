@@ -147,3 +147,13 @@ function displayNotes() {
   });
 }
 displayNotes();
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+
+  let isDark = document.body.classList.contains("dark");
+  localStorage.setItem("darkMode", isDark);
+}
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark");
+}
