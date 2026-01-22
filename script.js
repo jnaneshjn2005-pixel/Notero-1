@@ -37,6 +37,27 @@ function addNote() {
   }
 
   let file = fileInput.files[0];
+  // FILE SIZE VALIDATION (5MB)
+let maxSize = 5 * 1024 * 1024; // 5 MB
+
+if (file.size > maxSize) {
+  alert("File too large! Maximum allowed size is 5MB.");
+  return;
+}
+  // ALLOWED FILE TYPES
+let allowedTypes = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "video/mp4",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+];
+
+if (!allowedTypes.includes(file.type)) {
+  alert("Invalid file type!");
+  return;
+}
   let reader = new FileReader();
 
   reader.onload = function () {
