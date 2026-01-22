@@ -15,3 +15,24 @@ function login() {
     window.location.href = "dashboard.html";
   }
 }
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+function addNote() {
+  let note = {
+    title: title.value,
+    subject: subject.value,
+    content: content.value,
+    status: "pending"
+  };
+
+  notes.push(note);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  alert("Note sent for admin approval");
+
+  title.value = subject.value = content.value = "";
+}
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
