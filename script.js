@@ -118,6 +118,7 @@ function loadPending() {
 function approve(index) {
   notes[index].status = "approved";
   localStorage.setItem("notes", JSON.stringify(notes));
+  alert("Note approved successfully");
   loadPending();
 }
 
