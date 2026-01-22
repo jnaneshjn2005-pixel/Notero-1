@@ -1,9 +1,11 @@
-// 1️⃣ LOGIN FUNCTION (already added)
+/* =========================
+   LOGIN
+========================= */
 function login() {
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
 
-  if (username === "" || password === "") {
+  if (!username || !password) {
     alert("Fill all fields");
     return;
   }
@@ -17,84 +19,89 @@ function login() {
   }
 }
 
-// 2️⃣ LOGOUT FUNCTION
+/* =========================
+   LOGOUT
+========================= */
 function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
 }
 
-// 3️⃣ LOAD NOTES FROM LOCALSTORAGE (VERY IMPORTANT)
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-// 4️⃣ USER: ADD NOTE (PENDING)
+/* =========================
+   USER: ADD NOTE (PENDING)
+========================= */
 function addNote() {
   let currentUser = localStorage.getItem("currentUser");
   let fileInput = document.getElementById("file");
 
-  if (!fileInput.files.length) {
+  if (!fileInput || !fileInput.files.length) {
     alert("Please select a file");
     return;
   }
 
   let file = fileInput.files[0];
-  // FILE SIZE VALIDATION (5MB)
-let maxSize = 5 * 1024 * 1024; // 5 MB
 
-if (file.size > maxSize) {
-  alert("File too large! Maximum allowed size is 5MB.");
-  return;
-}
-  // ALLOWED FILE TYPES
-let allowedTypes = [
-  "application/pdf",
-  "image/jpeg",
-  "image/png",
-  "video/mp4",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-];
+  // File size limit (5MB)
+  let maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    alert("File too large! Max 5MB allowed.");
+    return;
+  }
 
-if (!allowedTypes.includes(file.type)) {
-  alert("Invalid file type!");
-  return;
-}
+  // Allowed file types
+  let allowedTypes = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "video/mp4",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+    alert("Invalid file type");
+    return;
+  }
+
   let reader = new FileReader();
 
   reader.onload = function () {
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
     let note = {
-      title: title.value,
-      subject: subject.value,
+      title: document.getElementById("title").value,
+      subject: document.getElementById("subject").value,
       fileName: file.name,
       fileType: file.type,
-      fileData: reader.result, // BASE64
+      fileData: reader.result,
       status: "pending",
       uploadedBy: currentUser
     };
 
     notes.push(note);
     localStorage.setItem("notes", JSON.stringify(notes));
+
     alert("File sent for admin approval");
 
-    title.value = subject.value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("subject").value = "";
     fileInput.value = "";
   };
 
   reader.readAsDataURL(file);
 }
 
-
-// ===============================
-// 👉 ADD YOUR CODE **HERE**
-// ===============================
-
-// 5️⃣ ADMIN: LOAD PENDING NOTES
+/* =========================
+   ADMIN: LOAD PENDING NOTES
+========================= */
 function loadPending() {
   let pendingDiv = document.getElementById("pending");
   if (!pendingDiv) return;
 
+  let notes = JSON.parse(localStorage.getItem("notes")) || [];
   pendingDiv.innerHTML = "";
 
-  notes.forEach((note, i) => {
+  notes.forEach((note, index) => {
     if (note.status === "pending") {
       pendingDiv.innerHTML += `
         <div class="note">
@@ -105,54 +112,52 @@ function loadPending() {
 
           <a href="${note.fileData}" target="_blank">View File</a><br><br>
 
-          <button onclick="approve(${i})">Approve</button>
-          <button onclick="deleteNote(${i})">Delete</button>
+          <button onclick="approve(${index})">Approve</button>
+          <button onclick="deleteNote(${index})">Delete</button>
         </div>
       `;
     }
   });
 }
 
-
-// 6️⃣ ADMIN: APPROVE NOTE
+/* =========================
+   ADMIN: APPROVE / DELETE
+========================= */
 function approve(index) {
+  let notes = JSON.parse(localStorage.getItem("notes")) || [];
   notes[index].status = "approved";
   localStorage.setItem("notes", JSON.stringify(notes));
-  alert("Note approved successfully");
+  alert("Note approved");
   loadPending();
 }
 
 function deleteNote(index) {
-  if (confirm("Are you sure you want to delete this note?")) {
-    notes.splice(index, 1);
-    localStorage.setItem("notes", JSON.stringify(notes));
-    loadPending();
-  }
+  if (!confirm("Delete this note?")) return;
+
+  let notes = JSON.parse(localStorage.getItem("notes")) || [];
+  notes.splice(index, 1);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  loadPending();
 }
 
-// 7️⃣ AUTO-RUN WHEN admin.html OPENS
-loadPending();
-
-// ===============================
-// USER: DISPLAY APPROVED NOTES
-// ===============================
+/* =========================
+   USER: DISPLAY APPROVED NOTES
+========================= */
 function displayNotes() {
-
-  // Always load latest data
-  notes = JSON.parse(localStorage.getItem("notes")) || [];
-
   let notesDiv = document.getElementById("notes");
   if (!notesDiv) return;
 
+  let notes = JSON.parse(localStorage.getItem("notes")) || [];
   let searchInput = document.getElementById("search");
   let searchText = searchInput ? searchInput.value.toLowerCase() : "";
 
   notesDiv.innerHTML = "";
 
   notes.forEach(note => {
-    let matchesSearch = note.title.toLowerCase().includes(searchText);
-
-    if (note.status === "approved" && matchesSearch) {
+    if (
+      note.status === "approved" &&
+      note.title.toLowerCase().includes(searchText)
+    ) {
       notesDiv.innerHTML += `
         <div class="note">
           <h3>${note.title}</h3>
@@ -168,18 +173,25 @@ function displayNotes() {
     }
   });
 }
-displayNotes();
 
+/* =========================
+   DARK MODE
+========================= */
 function toggleDark() {
   document.body.classList.toggle("dark");
-
-  let isDark = document.body.classList.contains("dark");
-  localStorage.setItem("darkMode", isDark);
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark")
+  );
 }
+
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
 }
 
+/* =========================
+   FILE ICONS
+========================= */
 function getFileIcon(type) {
   if (type.includes("pdf")) return "📄";
   if (type.includes("image")) return "🖼️";
@@ -187,4 +199,11 @@ function getFileIcon(type) {
   if (type.includes("word")) return "📝";
   return "📁";
 }
+
+/* =========================
+   AUTO RUN
+========================= */
+loadPending();
 displayNotes();
+
+
